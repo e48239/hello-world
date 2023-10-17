@@ -1,0 +1,61 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% if user.is_authenticated %}
+    <div id="posts">
+        <h5>{{ message }}</h5>
+        <br>
+        {% for post in posts %}
+        <div id="post" class="card">
+            <h7><a href="{% url 'profile' post.poster.id %}" class="card-header">{{ post.poster }}</a></h7>
+            <div class="card-body">
+              <h6 class="card-title"> {{ post.timestamp }} </h6>
+              <p class="card-text-body"> {{ post.body }} </p>
+              <p class="card-text-likes"> Likes: {{ post.likes }} </p>
+
+              {% if post.liked_by_user == True %}
+              <input type="button" class="unlike" data-post="{{post.id}}" data-type = "{{type}}" value="Unlike" class="btn btn-primary"/>
+              {% else %}
+              <input type="button" class="like" data-post="{{post.id}}" data-type = "{{type}}" value="Like" class="btn btn-primary"/>
+              {% endif %}
+              <br>
+              {% if user.username == post.poster.username %}
+              <a href="{% url 'edit' post.id %}">Edit</a>
+              {% endif %}
+            </div>
+          </div>
+          <br>
+        {% empty %}
+        {% if type == all %}
+        <h5>There are no posts for this network.</h5>
+        {% else %}
+        <h5>You aren't following anyone.</h5>
+        {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+{% if posts.has_other_pages %}
+  <ul class="pagination pagination-sm">
+    {% if posts.has_previous %}
+      <li><a href="?page={{ posts.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in posts.paginator.page_range %}
+      {% if posts.number == i %}
+        <li class="page-item active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if posts.has_next %}
+      <li><a href="?page={{ posts.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+{% endblock %}

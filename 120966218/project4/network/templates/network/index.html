@@ -1,0 +1,18 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% if user.is_authenticated %}
+<body>
+    <form action="{% url 'post' %}"  method="POST">
+    <div id="new">
+        <h4>New Post </h4>
+        <form id="compose-form">
+            <br>
+            <textarea class="form-control" name = "body" placeholder="What do you want to say?"></textarea> 
+            <br>
+            <input class="btn btn-primary" type="submit" value="Post">
+        </form>
+    </div>
+</body>
+{% endif %}
+{% endblock %}

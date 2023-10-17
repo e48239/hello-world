@@ -1,0 +1,19 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+{% if user.is_authenticated %}
+{{ message }}
+<body>
+    <form action="{% url 'save' post.id %}"  method="POST">
+    <div id="new">
+        <h4>Edit Post # {{ post.id }} </h4>
+        <form id="compose-form">
+            <br>
+            <textarea class="form-control" name = "body"> {{text}} </textarea> 
+            <br>
+            <input class="btn btn-primary" type="submit" value="Save">
+        </form>
+    </div>
+</body>
+{% endif %}
+{% endblock %}
